@@ -28,11 +28,11 @@ async function getProducts(req, res) {
     }
      
        const limit = parseInt(req.query.limit) || 3;// PAGINACION
-        const page  = parseInt(req.query.skip) || 0;// PAGINACION
+        const page  = parseInt(req.query.page) || 0;// PAGINACION
 
     const products = await Product.find()
                      .populate("category","name")
-                     .limit(3)                 // PAGINACION
+                     .limit(limit)                 // PAGINACION
                      .skip(page * limit)       // PAGINACION
 
     if (!products.length) {
@@ -57,27 +57,7 @@ async function getProducts(req, res) {
   }
 }
 
-//Funcion para agregar un Producto
-// async function createProduct(req, res) {
-//   try {
-//     const product = new Product(req.body);
-
-//     // Guardamos el producto
-//     const productSaved = await product.save();
-
-//     res.status(201).send({
-//       ok: true,
-//       message: "Producto creado correctamente",
-//       product: productSaved,
-//     });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).send({
-//       ok: false,
-//       message: "No se pudo crear el producto",
-//     });
-//   }
-// }
+// Funcion agregar producto
 async function createProduct(req, res) {
   try {
       const product = new Product(req.body)
@@ -137,32 +117,114 @@ async function deleteProduct(req, res) {
 }
 
 //Actualizar un Producto
+// async function updatetProduct(req, res) {
+//   try {
+//     const id = req.params.id;
+//     const nuevosValores = req.body;
+
+// //------------VER SI VA ACA file de imagen----------------
+// if (req.file?.filename) {
+//   nuevosValores.image = req.file.filename;
+// }
+// //---------------------------------------
+// const product = await Product.findById(id); //busco por id
+
+// if (!product) {
+//   return res.status(404).send({
+//     ok: false,
+//     message: "Producto no encontrado",
+//   });
+// }
+
+
+//     const productUpdate = await Product.findByIdAndUpdate(id, nuevosValores, {
+//       new: true,
+//     });
+
+//     res.send({
+//       ok: true,
+//       message: "El producto fue actualizado correctamente",
+//       product: productUpdate,
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     res.send({
+//       ok: false,
+//       message: "El producto no se pudo Actualizar",
+//     });
+//   }
+// }
 async function updatetProduct(req, res) {
   try {
-    const id = req.params.id;
-    const nuevosValores = req.body;
 
-    const productUpdate = await Product.findByIdAndUpdate(id, nuevosValores, {
-      new: true,
-    });
 
-    res.send({
-      ok: true,
-      message: "El producto fue actualizado correctamente",
-      product: productUpdate,
-    });
+      const id = req.params.id;
+      const nuevosValores = req.body;
+
+      if (req.file?.filename) {
+          nuevosValores.image = req.file.filename;
+      }
+      const product = await Product.findById(id); //busco por id
+
+      if (!product) {
+        return res.status(404).send({
+          ok: false,
+          message: "Producto no encontrado",
+        });
+      }
+
+      const productUpdater = await Product.findByIdAndUpdate(id, nuevosValores, { new: true })
+
+      res.send({
+          ok: true,
+          message: "Producto fue actualizado Correctamente",
+          product: productUpdater
+      });
+
   } catch (error) {
-    console.log(error);
-    res.send({
-      ok: false,
-      message: "El producto no se pudo Actualizar",
-    });
+      res.send({
+          ok: false,
+          message: "El producto no se pudo actualizar",
+          error: error
+      })
   }
 }
+//Buscar Producto
+async function searchProduct(req, res){
+
+  try {
+    const search = new RegExp( req.params.search,'i')  //Nombre
+
+    console.log(search)
+   
+    const products = await Product.find({
+        
+      producto:search
+      
+    })
+
+    console.log(products)
+    return res.send({
+      ok:true,
+      message:"Producto encontrado",
+      products,
+    })
+    
+  } catch (error) {
+    console.log(error)
+    res.status(500).send({
+      ok:false,
+      message:"No se encontro el producto"
+    })
+  }
+
+}
+
 
 module.exports = {
   createProduct,
   deleteProduct,
   updatetProduct,
   getProducts,
+  searchProduct
 };

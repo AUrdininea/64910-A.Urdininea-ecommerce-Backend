@@ -1,51 +1,46 @@
 const mongoose = require("mongoose");
+
 const Schema = mongoose.Schema;
 
 const productSchema = new Schema({
-  title: {
+  producto: {
     type: String,
     required: false,
     minlength: 3,
     maxlength: 100,
     trim: true,
-    validate: {
-      validator: function (title) {
-        const regex = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]*$/;
-        return regex.test(title);
-      },
-    },
+    
   },
   
-  description: {
+  descripcion: {
     type: String,
     required: false,
     minlength: 4,
-    maxlength: 300,
+    maxlength: 600,
     trim: true,
   },
-  price: {
+  precio: {
     type: Number,
     required: true,
-    min: 510000,
+    min: 1,
     max: 120000000,
   },
   image: {
     type: String,
-    required: false,
-    trim: true,
+    
   },
-  createdAt: {
+  fecha: {
     type: Date,
     default: Date.now,
   },
   category: {
     type: Schema.Types.ObjectId,
     ref: "Category",
-    required: true,
+    required: false,
   },
   active: {
     type: Boolean,
-    default: true,
+    default: false,
   },
 });
 

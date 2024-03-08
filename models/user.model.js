@@ -23,7 +23,7 @@ const userSchema = new Schema({
         lowercase:true,
         trim:true,
         minlength:9,
-        maxlength:20,
+        maxlength:100,
         validate:{
             validator: function(value){
                 const regex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,})?$/

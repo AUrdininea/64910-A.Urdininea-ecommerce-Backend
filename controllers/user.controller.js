@@ -29,7 +29,7 @@ async function getUsers(req, res) {
       });
     }
 
-    const limit = parseInt(req.query.limit) || 5; // PAGINACION
+    const limit = parseInt(req.query.limit) || 20; // PAGINACION
     const page = parseInt(req.query.page) || 0; // PAGINACION
 
     

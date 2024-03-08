@@ -16,6 +16,7 @@ router.post('/products', [jwtVerify, isAdmin, uploadImage], productController.cr
 //Borrar producto DELETE
 router.delete('/products/:idProduct' ,[jwtVerify,isAdmin],productController.deleteProduct)
 
+router.get('/products/search/:search', productController.searchProduct)
 
 
 //Actualizar un producto PUT
