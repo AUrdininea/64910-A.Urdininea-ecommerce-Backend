@@ -20,7 +20,7 @@ router.get('/products/search/:search', productController.searchProduct)
 
 
 //Actualizar un producto PUT
-router.put('/products/:id',[jwtVerify,isAdmin] , productController.updatetProduct)
+router.put('/products/:id',[jwtVerify,isAdmin,uploadImage] , productController.updatetProduct)
 
 
 module.exports = router;

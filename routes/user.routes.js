@@ -19,7 +19,7 @@ router.delete('/users/:idUser',[jwtVerify,isAdmin] ,userController.deleteUser)
 
 
 //Actualizar un usuario PUT
-router.put('/users/:id',jwtVerify,uploadImage, userController.updatetUser)
+router.put('/users/:id',[jwtVerify,isAdmin,uploadImage], userController.updatetUser)
 
 //Buscador de usuarios  que se puede usar paraproductos tambien
 router.get('/users/search/:search', userController.searchUser)
